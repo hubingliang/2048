@@ -1,7 +1,7 @@
 <template>
     <section class="game">
-        <div class="row animated" v-for="row in gameBox">
-            <div class="col animated zoomIn" :class="'n-' + number" v-for="number in row">{{number}}</div>
+        <div class="row" v-for="row in gameBox">
+            <div class="col animated" :class="'n-' + number" v-for="number in row">{{number}}</div>
         </div>
     </section>
 </template> 
@@ -37,6 +37,7 @@ export default class Game extends Vue {
     ];
     firstLine: number[] = [];
     @Emit()
+    // 游戏初始化
     newGame() {
         this.score = 0;
         this.over = false;
@@ -45,6 +46,7 @@ export default class Game extends Vue {
         );
         document.addEventListener("keyup", this.keyDown);
     }
+    // 绑定键盘事件
     keyDown(e: any) {
         switch (e.keyCode) {
             case 38: //上
@@ -62,22 +64,14 @@ export default class Game extends Vue {
         }
         this.setRandom();
     }
+    // 随机在空格子生成一个2或4
     setRandom() {
         if (this.getEmptyBox().length > 0) {
             let [x, y] = this.getRandomBox();
             this.gameBox[x][y] = this.getRandomNumber();
         }
     }
-    getRandomBox() {
-        if (this.emptyBox.length) {
-            return this.emptyBox[
-                Math.floor(Math.random() * this.emptyBox.length)
-            ];
-        }
-    }
-    getRandomNumber() {
-        return Math.random() < 0.9 ? 2 : 4;
-    }
+    // 获取所有空格子
     getEmptyBox() {
         this.emptyBox = [];
         for (let x = 0; x < this.size; x++) {
@@ -89,6 +83,46 @@ export default class Game extends Vue {
         }
         return this.emptyBox;
     }
+    // 在空格子中随机选取一个
+    getRandomBox() {
+        if (this.emptyBox.length) {
+            return this.emptyBox[
+                Math.floor(Math.random() * this.emptyBox.length)
+            ];
+        }
+    }
+    // 以1:9的概率选择4或2
+    getRandomNumber() {
+        return Math.random() < 0.9 ? 2 : 4;
+    }
+    // 根据不同方向的移动进行合并，并判断是否game over
+    move(i: number) {
+        let arr = this.rotate(this.gameBox, i).map(item => {
+            return this.moveLeft(item);
+        });
+        this.gameBox = this.rotate(arr, this.size - i);
+        this.setLocalstorage();
+        if (this.getEmptyBox().length === 0) {
+            this.over = true;
+            alert("game over!!");
+        }
+    }
+    // 逆时针旋转算法
+    rotate(arr: any[], n: number) {
+        n = n % 4;
+        if (n === 0) return arr;
+        let tmp: any[] = Array.from(Array(this.size)).map(() =>
+            Array(this.size).fill(undefined)
+        );
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                tmp[this.size - 1 - i][j] = arr[j][i];
+            }
+        }
+        if (n > 1) tmp = this.rotate(tmp, n - 1);
+        return tmp;
+    }
+    // 左移合并算法
     moveLeft(list: number[]) {
         let _list: object[] = []; //当前行非空格子
         let flg: boolean = false;
@@ -129,6 +163,7 @@ export default class Game extends Vue {
         });
         return list;
     }
+    // 判断最远的
     farthestPosition(list: number[], cell: {}) {
         let farthest = cell.x;
         while (farthest > 0 && !list[farthest - 1]) {
@@ -136,30 +171,7 @@ export default class Game extends Vue {
         }
         return farthest;
     }
-    move(i: number) {
-        let arr = this.rotate(this.gameBox, i).map(item => {
-            return this.moveLeft(item);
-        });
-        this.gameBox = this.rotate(arr, this.size - i);
-        this.setLocalstorage();
-        if (this.getEmptyBox().length === 0) {
-            this.over = true;
-        }
-    }
-    rotate(arr: any[], n: number) {
-        n = n % 4;
-        if (n === 0) return arr;
-        let tmp: any[] = Array.from(Array(this.size)).map(() =>
-            Array(this.size).fill(undefined)
-        );
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                tmp[this.size - 1 - i][j] = arr[j][i];
-            }
-        }
-        if (n > 1) tmp = this.rotate(tmp, n - 1);
-        return tmp;
-    }
+    // 利用localstorage储存数据
     setLocalstorage() {
         let score = localStorage.getItem("bestScore");
         if (score) {
@@ -179,62 +191,94 @@ export default class Game extends Vue {
 </script>
 
 <style lang="less" scoped>
-.row {
-    display: flex;
-    height: 125px;
+.game {
+    border-radius: 3px;
+    height: 500px;
     width: 500px;
     background: #bbada0;
+    display: flex;
     align-items: center;
-    justify-content: space-around;
-    .col {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 15px;
+    .row {
         display: flex;
+        height: 106.25px;
+        width: 470px;
         align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        border-radius: 3px;
-        height: 105px;
-        width: 105px;
-        color: #776e65;
-        background: #cdc1b4;
-        &.n-2 {
-            background: #eee4da;
-        }
-        &.n-4 {
-            background: #ede0c8;
-        }
+        justify-content: space-between;
+        margin-bottom: 15px;
+        .col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            border-radius: 3px;
+            height: 106.25px;
+            width: 106.25px;
+            color: #776e65;
+            background: #cdc1b4;
+            &.n-2 {
+                background: #eee4da;
+            }
+            &.n-4 {
+                background: #ede0c8;
+            }
 
-        &.n-8 {
-            background: #F2B179;
-        }
-        &.n-16 {
-            background: #F59563;
-        }
-        &.n-32 {
-            background: #F67C5F;
-        }
-        &.n-64 {
-            background: #F65E3B;
-        }
-        &.n-128 {
-            background: #EDCF72;
-        }
-        &.n-256 {
-            background: #EDCC61;
-        }
-        &.n-512 {
-            background: #EDC850;
-        }
-        &.n-1024 {
-            background: #EDC53F;
-        }
-        &.n-2048 {
-            background: #edc22e;
-        }
-        &.n-4096 {
-            background: #3c3a32;
-        }
-        &.n-8192 {
-            background: #3c3a32;
+            &.n-8 {
+                color: #f9f6f2;
+                background: #f2b179;
+            }
+            &.n-16 {
+                color: #f9f6f2;
+                background: #f59563;
+            }
+            &.n-32 {
+                color: #f9f6f2;
+                background: #f67c5f;
+            }
+            &.n-64 {
+                color: #f9f6f2;
+                background: #f65e3b;
+            }
+            &.n-128 {
+                color: #f9f6f2;
+                background: #edcf72;
+                font-size: 45px;
+            }
+            &.n-256 {
+                color: #f9f6f2;
+                background: #edcc61;
+                font-size: 45px;
+            }
+            &.n-512 {
+                color: #f9f6f2;
+                background: #edc850;
+                font-size: 45px;
+            }
+            &.n-1024 {
+                color: #f9f6f2;
+                background: #edc53f;
+                font-size: 35px;
+            }
+            &.n-2048 {
+                color: #f9f6f2;
+                background: #edc22e;
+                font-size: 35px;
+            }
+            &.n-4096 {
+                color: #f9f6f2;
+                background: #3c3a32;
+                font-size: 35px;
+            }
+            &.n-8192 {
+                color: #f9f6f2;
+                background: #3c3a32;
+                font-size: 35px;
+            }
+            .col:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 }
