@@ -218,6 +218,7 @@ export default class Game extends Vue {
             width: 106.25px;
             color: #776e65;
             background: #cdc1b4;
+            font-weight: bold;
             &.n-2 {
                 background: #eee4da;
             }
