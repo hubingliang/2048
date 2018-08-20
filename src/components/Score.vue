@@ -1,21 +1,18 @@
 <template>
     <section class="score">
-        {{score}} ss
+        {{'分数：' + this.$store.state.score}}
+        {{'最佳分数：'+ this.$store.state.bestScore}}
     </section>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue, Emit } from "vue-property-decorator";
-@Component
-export default class Score extends Vue {
-    @Prop(Number) score!: number;
-}
-</script>
-
 <style lang="less" scoped>
-.score{
+.score {
     position: absolute;
     left: 0;
-    
+    width: 20vw;
+    height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

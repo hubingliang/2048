@@ -1,13 +1,14 @@
 <template>
     <section class="game">
-        <div class="row" v-for="row in gameBox">
-            <div class="col animated" :class="'n-' + number" v-for="number in row">{{number}}</div>
+        <div class="row" v-for="row in gameBox" v-bind:key="row">
+            <div class="col animated" :class="'n-' + number" v-for="number in row" v-bind:key="number">{{number}}</div>
         </div>
     </section>
 </template> 
 
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
+import store from "@/store";
 
 @Component
 export default class Game extends Vue {
@@ -39,11 +40,12 @@ export default class Game extends Vue {
     @Emit()
     // 游戏初始化
     newGame() {
-        this.score = 0;
+        store.commit("initGame");
         this.over = false;
         this.gameBox = Array.from(Array(this.size)).map(() =>
             Array(this.size).fill(undefined)
         );
+        this.setLocalstorage()
         document.addEventListener("keyup", this.keyDown);
     }
     // 绑定键盘事件
@@ -63,6 +65,7 @@ export default class Game extends Vue {
                 break;
         }
         this.setRandom();
+        this.updateScore();
     }
     // 随机在空格子生成一个2或4
     setRandom() {
@@ -152,7 +155,8 @@ export default class Game extends Vue {
                     merged: true,
                     value: next * 2
                 };
-                this.score += next * 2;
+                let extraScore = next * 2;
+                store.commit("updateScore", extraScore);
             } else {
                 if (farthest != item.x) {
                     list[farthest] = item.value;
@@ -173,16 +177,32 @@ export default class Game extends Vue {
     }
     // 利用localstorage储存数据
     setLocalstorage() {
-        let score = localStorage.getItem("bestScore");
-        if (score) {
-            if (this.score > +score) {
-                localStorage.setItem("bestScore", `${this.score}`);
-                this.bestScore = this.score;
+        let bestScore = localStorage.getItem("bestScore");
+        
+        let currentScore = this.$store.state.score;
+        if (bestScore) {
+            if (currentScore > +bestScore) {
+                localStorage.setItem("bestScore", `${currentScore}`);
+                store.commit("updateBestScore", currentScore);
+            }else{
+                store.commit("updateBestScore", bestScore);
             }
         } else {
-            localStorage.setItem("bestScore", `${this.score}`);
-            this.bestScore = this.score;
+            localStorage.setItem("bestScore", `${currentScore}`);
+            store.commit("updateBestScore", currentScore);
         }
+    }
+    // 更新分数
+    updateScore() {
+        let score = 0;
+        for (let x = 0; x < this.size; x++) {
+            for (let y = 0; y < this.size; y++) {
+                if (this.gameBox[x][y]) {
+                    score = score + this.gameBox[x][y];
+                }
+            }
+        }
+        store.commit("updateScore", score);
     }
     mounted() {
         this.newGame();
@@ -201,6 +221,7 @@ export default class Game extends Vue {
     justify-content: space-between;
     flex-wrap: wrap;
     padding: 15px;
+    margin-top: 60px;
     .row {
         display: flex;
         height: 106.25px;
