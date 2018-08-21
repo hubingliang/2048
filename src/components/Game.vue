@@ -1,7 +1,7 @@
 <template>
     <section class="game">
-        <div class="row" v-for="row in gameBox" v-bind:key="row">
-            <div class="col animated" :class="'n-' + number" v-for="number in row" v-bind:key="number">{{number}}</div>
+        <div class="row" v-for="(row,index) in gameBox" v-bind:key="index">
+            <div class="col animated" :class="'n-' + number" v-for="(number,index) in row" v-bind:key="index">{{number}}</div>
         </div>
     </section>
 </template> 
@@ -45,7 +45,7 @@ export default class Game extends Vue {
         this.gameBox = Array.from(Array(this.size)).map(() =>
             Array(this.size).fill(undefined)
         );
-        this.setLocalstorage()
+        this.setLocalstorage();
         document.addEventListener("keyup", this.keyDown);
     }
     // 绑定键盘事件
@@ -126,8 +126,13 @@ export default class Game extends Vue {
         return tmp;
     }
     // 左移合并算法
-    moveLeft(list: number[]) {
-        let _list: object[] = []; //当前行非空格子
+    moveLeft(list: number[] | undefined[]) {
+        interface numberType {
+            x: number;
+            merged: boolean;
+            value: number | undefined;
+        }
+        let _list: numberType[] = []; //当前行非空格子
         let flg: boolean = false;
         for (let i = 0; i < this.size; i++) {
             if (list[i]) {
@@ -138,14 +143,9 @@ export default class Game extends Vue {
                 });
             }
         }
-        interface numberType {
-            x: any;
-            merged: boolean;
-            value: number;
-        }
-        _list.forEach((item: numberType) => {
-            let farthest = this.farthestPosition(list, item);
-            let next: number = list[farthest - 1];
+        _list.forEach(item => {
+            let farthest = this.farthestPosition(list, item.x);
+            let next: number | undefined = list[farthest - 1];
             if (next && next === item.value && !_list[farthest - 1].merged) {
                 //合并
                 list[farthest - 1] = next * 2;
@@ -168,8 +168,8 @@ export default class Game extends Vue {
         return list;
     }
     // 判断最远的
-    farthestPosition(list: number[], cell: {}) {
-        let farthest = cell.x;
+    farthestPosition(list: number[] | undefined[], cell: number) {
+        let farthest = cell;
         while (farthest > 0 && !list[farthest - 1]) {
             farthest = farthest - 1;
         }
@@ -178,13 +178,13 @@ export default class Game extends Vue {
     // 利用localstorage储存数据
     setLocalstorage() {
         let bestScore = localStorage.getItem("bestScore");
-        
+
         let currentScore = this.$store.state.score;
         if (bestScore) {
             if (currentScore > +bestScore) {
                 localStorage.setItem("bestScore", `${currentScore}`);
                 store.commit("updateBestScore", currentScore);
-            }else{
+            } else {
                 store.commit("updateBestScore", bestScore);
             }
         } else {
