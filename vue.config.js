@@ -1,4 +1,4 @@
 module.exports = {
     // 选项...  
-    baseUrl: '/dist/'
+    baseUrl: '/2048/dist/'
 }
