@@ -1,5 +1,6 @@
 <template>
     <section class="game">
+        <v-touch v-on:swipeleft="move(0)" v-on:swiperight="move(2)" v-on:swipeup="move(1)" v-on:swipedown="move(3)"></v-touch>
         <div class="row" v-for="(row,index) in gameBox" v-bind:key="index">
             <div class="col animated" :class="'n-' + number" v-for="(number,index) in row" v-bind:key="index">{{number}}</div>
         </div>
@@ -9,6 +10,8 @@
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 import store from "@/store";
+var VueTouch = require("vue-touch");
+Vue.use(VueTouch, { name: "v-touch" });
 
 @Component
 export default class Game extends Vue {
@@ -46,6 +49,8 @@ export default class Game extends Vue {
             Array(this.size).fill(undefined)
         );
         this.setLocalstorage();
+        this.setRandom();
+        this.updateScore();
         document.addEventListener("keyup", this.keyDown);
     }
     // 绑定键盘事件
@@ -212,31 +217,31 @@ export default class Game extends Vue {
 
 <style lang="less" scoped>
 .game {
-    border-radius: 3px;
-    height: 500px;
-    width: 500px;
+    border-radius: 15px;
+    height: 650px;
+    width: 650px;
     background: #bbada0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 15px;
-    margin-top: 60px;
+    padding: 19.5px;
+    margin-top: 350px;
     .row {
         display: flex;
-        height: 106.25px;
-        width: 470px;
+        height: 138.125px;
+        width: 611px;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 15px;
+        margin-bottom: 19.5px;
         .col {
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 55px;
             border-radius: 3px;
-            height: 106.25px;
-            width: 106.25px;
+            height: 138.125px;
+            width: 138.125px;
             color: #776e65;
             background: #cdc1b4;
             font-weight: bold;

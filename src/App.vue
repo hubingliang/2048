@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
     <Game/>
-    <Score/>
+    <!-- <Score/> -->
     <Topbar/>
+    <Footer/>
   </div>
 </template>
 
@@ -12,11 +12,13 @@ import { Component, Vue } from "vue-property-decorator";
 import Game from "./components/Game.vue";
 import Topbar from "./components/Topbar.vue";
 import Score from "./components/Score.vue";
+import Footer from "./components/Footer.vue";
+
 
 
 @Component({
     components: {
-        Game,Score,Topbar
+        Game,Score,Topbar,Footer
     }
 })
 export default class App extends Vue {
