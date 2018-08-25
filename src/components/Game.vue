@@ -1,10 +1,13 @@
 <template>
-    <section class="game">
-        <v-touch v-on:swipeleft="move(0)" v-on:swiperight="move(2)" v-on:swipeup="move(1)" v-on:swipedown="move(3)"></v-touch>
+    <v-touch class="game" 
+    v-on:swipeleft="touchSwipe('left')" 
+    v-on:swiperight="touchSwipe('right')" 
+    v-on:swipeup="touchSwipe('up')" 
+    v-on:swipedown="touchSwipe('down')">
         <div class="row" v-for="(row,index) in gameBox" v-bind:key="index">
             <div class="col animated" :class="'n-' + number" v-for="(number,index) in row" v-bind:key="index">{{number}}</div>
         </div>
-    </section>
+    </v-touch>
 </template> 
 
 <script lang="ts">
@@ -66,6 +69,24 @@ export default class Game extends Vue {
                 this.move(0);
                 break;
             case 39: //右
+                this.move(2);
+                break;
+        }
+        this.setRandom();
+        this.updateScore();
+    }
+    touchSwipe(direction:string) {
+        switch (direction) {
+            case 'up': //上
+                this.move(1);
+                break;
+            case 'down': //下
+                this.move(3);
+                break;
+            case 'left': //左
+                this.move(0);
+                break;
+            case 'right': //右
                 this.move(2);
                 break;
         }
