@@ -130,7 +130,7 @@ export default class Game extends Vue {
         if (this.getEmptyBox().length === 0) {
             this.over = true;
             alert("game over!!");
-            this.newGame()
+            this.restartGame();
         }
     }
     // 逆时针旋转算法
@@ -238,6 +238,16 @@ export default class Game extends Vue {
             }
         }
         store.commit("updateScore", score);
+    }
+    // 重新游戏
+    restartGame() {
+        let gameBox = Array.from(Array(4)).map(() => Array(4).fill(undefined));
+        let x = Math.floor(Math.random() * 4);
+        let y = Math.floor(Math.random() * 4);
+        this.$store.state.gameBox[x][y] = Math.random() < 0.9 ? 2 : 4;
+        store.commit("setGameBox", gameBox);
+        store.commit("initScore");
+        localStorage.setItem("gameBox", JSON.stringify(gameBox));
     }
     mounted() {
         this.newGame();
