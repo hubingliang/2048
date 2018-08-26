@@ -4,7 +4,7 @@
             <div class="title">Score</div>
             {{this.$store.state.score}}
         </div>
-        <div class="bestScore">
+        <div class="score bestScore">
             <div class="title">BestScore</div>
             {{this.$store.state.bestScore}}
         </div>
@@ -20,6 +20,7 @@
     margin-right: 50px;
     .score {
         background: #bbada0;
+        height: 120px;
         min-width: 200px;
         color: #ffffff;
         margin-right: 10px;
@@ -39,26 +40,8 @@
             color: #eee4da;
         }
     }
-    .bestScore {
-        background: #bbada0;
-        height: 100px;
-        min-width: 160px;
-        color: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        padding: 5px;
-        font-weight: bold;
-        font-size: 40px;
-        .title {
-            font-size: 35px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            color: #eee4da;
-        }
+    .bestScore{
+        margin: 0;
     }
 }
 </style>

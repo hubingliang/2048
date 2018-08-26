@@ -42,7 +42,7 @@ export default class App extends Vue {}
     overflow: hidden;
     display: grid;
     grid-template-columns: 750px;
-    grid-template-rows: 20vh 9vh 8vh 55vh 8vh;
+    grid-template-rows: 18vh 11vh 8vh 55vh 8vh;
     grid-template-areas:
         "topbar"
         "score"
