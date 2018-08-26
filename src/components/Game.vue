@@ -130,6 +130,7 @@ export default class Game extends Vue {
         if (this.getEmptyBox().length === 0) {
             this.over = true;
             alert("game over!!");
+            this.newGame()
         }
     }
     // 逆时针旋转算法
