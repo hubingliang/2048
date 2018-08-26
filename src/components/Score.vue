@@ -31,6 +31,7 @@
         padding: 5px;
         font-weight: bold;
         font-size: 40px;
+        border-radius: 8px;
         .title {
             font-size: 35px;
             display: flex;
