@@ -20,7 +20,6 @@
     margin-right: 50px;
     .score {
         background: #bbada0;
-        height: 100px;
         min-width: 200px;
         color: #ffffff;
         margin-right: 10px;
@@ -28,7 +27,7 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-        padding: 10px;
+        padding: 5px;
         font-weight: bold;
         font-size: 40px;
         .title {
@@ -49,7 +48,7 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-        padding: 10px;
+        padding: 5px;
         font-weight: bold;
         font-size: 40px;
         .title {
