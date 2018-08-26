@@ -1,10 +1,6 @@
 <template>
-    <v-touch class="game" 
-    v-on:swipeleft="touchSwipe('left')" 
-    v-on:swiperight="touchSwipe('right')" 
-    v-on:swipeup="touchSwipe('up')" 
-    v-on:swipedown="touchSwipe('down')">
-        <div class="row" v-for="(row,index) in gameBox" v-bind:key="index">
+    <v-touch class="game" v-on:swipeleft="touchSwipe('left')" v-on:swiperight="touchSwipe('right')" v-on:swipeup="touchSwipe('up')" v-on:swipedown="touchSwipe('down')">
+        <div class="row" v-for="(row,index) in this.$store.state.gameBox" v-bind:key="index">
             <div class="col animated" :class="'n-' + number" v-for="(number,index) in row" v-bind:key="index">{{number}}</div>
         </div>
     </v-touch>
@@ -18,9 +14,6 @@ Vue.use(VueTouch, { name: "v-touch" });
 
 @Component
 export default class Game extends Vue {
-    gameBox: any[] = [];
-    score: number = 0;
-    bestScore: number = 0;
     size: number = 4;
     over: boolean = true;
     emptyBox: any[] = [];
@@ -46,13 +39,10 @@ export default class Game extends Vue {
     @Emit()
     // 游戏初始化
     newGame() {
-        store.commit("initGame");
+        store.commit("initScore");
         this.over = false;
-        this.gameBox = Array.from(Array(this.size)).map(() =>
-            Array(this.size).fill(undefined)
-        );
+        this.getLocalstorage();
         this.setLocalstorage();
-        this.setRandom();
         this.updateScore();
         document.addEventListener("keyup", this.keyDown);
     }
@@ -75,18 +65,18 @@ export default class Game extends Vue {
         this.setRandom();
         this.updateScore();
     }
-    touchSwipe(direction:string) {
+    touchSwipe(direction: string) {
         switch (direction) {
-            case 'up': //上
+            case "up": //上
                 this.move(1);
                 break;
-            case 'down': //下
+            case "down": //下
                 this.move(3);
                 break;
-            case 'left': //左
+            case "left": //左
                 this.move(0);
                 break;
-            case 'right': //右
+            case "right": //右
                 this.move(2);
                 break;
         }
@@ -97,7 +87,7 @@ export default class Game extends Vue {
     setRandom() {
         if (this.getEmptyBox().length > 0) {
             let [x, y] = this.getRandomBox();
-            this.gameBox[x][y] = this.getRandomNumber();
+            this.$store.state.gameBox[x][y] = this.getRandomNumber();
         }
     }
     // 获取所有空格子
@@ -105,7 +95,7 @@ export default class Game extends Vue {
         this.emptyBox = [];
         for (let x = 0; x < this.size; x++) {
             for (let y = 0; y < this.size; y++) {
-                if (!this.gameBox[x][y]) {
+                if (!this.$store.state.gameBox[x][y]) {
                     this.emptyBox.push([x, y]);
                 }
             }
@@ -126,10 +116,14 @@ export default class Game extends Vue {
     }
     // 根据不同方向的移动进行合并，并判断是否game over
     move(i: number) {
-        let arr = this.rotate(this.gameBox, i).map(item => {
+        let arr = this.rotate(this.$store.state.gameBox, i).map(item => {
             return this.moveLeft(item);
         });
-        this.gameBox = this.rotate(arr, this.size - i);
+        store.commit("setGameBox", this.rotate(arr, this.size - i));
+        localStorage.setItem(
+            "gameBox",
+            JSON.stringify(this.rotate(arr, this.size - i))
+        );
         this.setLocalstorage();
         if (this.getEmptyBox().length === 0) {
             this.over = true;
@@ -218,13 +212,25 @@ export default class Game extends Vue {
             store.commit("updateBestScore", currentScore);
         }
     }
+    // 初始化二维数组
+    getLocalstorage() {
+        let gameBox: any = localStorage.getItem("gameBox");
+        if (gameBox) {
+            store.commit("setGameBox", JSON.parse(gameBox));
+        } else {
+            gameBox = Array.from(Array(this.size)).map(() =>
+                Array(this.size).fill(undefined)
+            );
+            store.commit("setGameBox", gameBox);
+        }
+    }
     // 更新分数
     updateScore() {
         let score = 0;
         for (let x = 0; x < this.size; x++) {
             for (let y = 0; y < this.size; y++) {
-                if (this.gameBox[x][y]) {
-                    score = score + this.gameBox[x][y];
+                if (this.$store.state.gameBox[x][y]) {
+                    score = score + this.$store.state.gameBox[x][y];
                 }
             }
         }

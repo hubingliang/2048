@@ -1,10 +1,11 @@
 <template>
-  <div id="app">
-    <Game/>
-    <!-- <Score/> -->
-    <Topbar/>
-    <Footer/>
-  </div>
+    <div id="app">
+        <Game/>
+        <Score/>
+        <Topbar/>
+        <Footer/>
+        <NewGame/>
+    </div>
 </template>
 
 <script lang="ts">
@@ -13,16 +14,18 @@ import Game from "./components/Game.vue";
 import Topbar from "./components/Topbar.vue";
 import Score from "./components/Score.vue";
 import Footer from "./components/Footer.vue";
-
-
+import NewGame from "./components/NewGame.vue";
 
 @Component({
     components: {
-        Game,Score,Topbar,Footer
+        Game,
+        Score,
+        Topbar,
+        Footer,
+        NewGame
     }
 })
-export default class App extends Vue {
-}
+export default class App extends Vue {}
 </script>
 
 <style lang="less">
@@ -38,7 +41,7 @@ export default class App extends Vue {
     align-items: center;
     height: 100vh;
     width: 100vw;
-    background: #FAF8EF;
+    background: #faf8ef;
     overflow: hidden;
 }
 </style>

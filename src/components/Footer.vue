@@ -16,7 +16,7 @@
     width: 100vw;
     height: 6vh;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: flex-end;
     margin-bottom: 50px;
     margin-right: 50px;
