@@ -13,14 +13,11 @@
 
 <style lang="less" scoped>
 .scoreBox {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-right: 50px;
-    margin-top: 280px;
+    grid-area: "score";
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    margin-right: 50px;
     .score {
         background: #bbada0;
         height: 100px;

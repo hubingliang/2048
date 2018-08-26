@@ -1,9 +1,11 @@
 <template>
-    <v-touch class="game" v-on:swipeleft="touchSwipe('left')" v-on:swiperight="touchSwipe('right')" v-on:swipeup="touchSwipe('up')" v-on:swipedown="touchSwipe('down')">
-        <div class="row" v-for="(row,index) in this.$store.state.gameBox" v-bind:key="index">
-            <div class="col animated" :class="'n-' + number" v-for="(number,index) in row" v-bind:key="index">{{number}}</div>
-        </div>
-    </v-touch>
+    <div class="gameBox">
+        <v-touch class="game" v-on:swipeleft="touchSwipe('left')" v-on:swiperight="touchSwipe('right')" v-on:swipeup="touchSwipe('up')" v-on:swipedown="touchSwipe('down')">
+            <div class="row" v-for="(row,index) in this.$store.state.gameBox" v-bind:key="index">
+                <div class="col animated" :class="'n-' + number" v-for="(number,index) in row" v-bind:key="index">{{number}}</div>
+            </div>
+        </v-touch>
+    </div>
 </template> 
 
 <script lang="ts">
@@ -243,95 +245,100 @@ export default class Game extends Vue {
 </script>
 
 <style lang="less" scoped>
-.game {
-    border-radius: 15px;
-    height: 650px;
-    width: 650px;
-    background: #bbada0;
+.gameBox {
+    grid-area: "game";
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: 19.5px;
-    margin-top: 350px;
-    .row {
+    justify-content: center;
+    .game {
+        border-radius: 15px;
+        height: 650px;
+        width: 650px;
+        background: #bbada0;
         display: flex;
-        height: 138.125px;
-        width: 611px;
         align-items: center;
-        justify-content: space-between;
-        margin-bottom: 19.5px;
-        .col {
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 19.5px;
+        .row {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 55px;
-            border-radius: 3px;
             height: 138.125px;
-            width: 138.125px;
-            color: #776e65;
-            background: #cdc1b4;
-            font-weight: bold;
-            &.n-2 {
-                background: #eee4da;
-            }
-            &.n-4 {
-                background: #ede0c8;
-            }
+            width: 611px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 19.5px;
+            .col {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 55px;
+                border-radius: 3px;
+                height: 138.125px;
+                width: 138.125px;
+                color: #776e65;
+                background: #cdc1b4;
+                font-weight: bold;
+                &.n-2 {
+                    background: #eee4da;
+                }
+                &.n-4 {
+                    background: #ede0c8;
+                }
 
-            &.n-8 {
-                color: #f9f6f2;
-                background: #f2b179;
-            }
-            &.n-16 {
-                color: #f9f6f2;
-                background: #f59563;
-            }
-            &.n-32 {
-                color: #f9f6f2;
-                background: #f67c5f;
-            }
-            &.n-64 {
-                color: #f9f6f2;
-                background: #f65e3b;
-            }
-            &.n-128 {
-                color: #f9f6f2;
-                background: #edcf72;
-                font-size: 45px;
-            }
-            &.n-256 {
-                color: #f9f6f2;
-                background: #edcc61;
-                font-size: 45px;
-            }
-            &.n-512 {
-                color: #f9f6f2;
-                background: #edc850;
-                font-size: 45px;
-            }
-            &.n-1024 {
-                color: #f9f6f2;
-                background: #edc53f;
-                font-size: 35px;
-            }
-            &.n-2048 {
-                color: #f9f6f2;
-                background: #edc22e;
-                font-size: 35px;
-            }
-            &.n-4096 {
-                color: #f9f6f2;
-                background: #3c3a32;
-                font-size: 35px;
-            }
-            &.n-8192 {
-                color: #f9f6f2;
-                background: #3c3a32;
-                font-size: 35px;
-            }
-            .col:last-child {
-                margin-bottom: 0;
+                &.n-8 {
+                    color: #f9f6f2;
+                    background: #f2b179;
+                }
+                &.n-16 {
+                    color: #f9f6f2;
+                    background: #f59563;
+                }
+                &.n-32 {
+                    color: #f9f6f2;
+                    background: #f67c5f;
+                }
+                &.n-64 {
+                    color: #f9f6f2;
+                    background: #f65e3b;
+                }
+                &.n-128 {
+                    color: #f9f6f2;
+                    background: #edcf72;
+                    font-size: 45px;
+                }
+                &.n-256 {
+                    color: #f9f6f2;
+                    background: #edcc61;
+                    font-size: 45px;
+                }
+                &.n-512 {
+                    color: #f9f6f2;
+                    background: #edc850;
+                    font-size: 45px;
+                }
+                &.n-1024 {
+                    color: #f9f6f2;
+                    background: #edc53f;
+                    font-size: 35px;
+                }
+                &.n-2048 {
+                    color: #f9f6f2;
+                    background: #edc22e;
+                    font-size: 35px;
+                }
+                &.n-4096 {
+                    color: #f9f6f2;
+                    background: #3c3a32;
+                    font-size: 35px;
+                }
+                &.n-8192 {
+                    color: #f9f6f2;
+                    background: #3c3a32;
+                    font-size: 35px;
+                }
+                .col:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
     }

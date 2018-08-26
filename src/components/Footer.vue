@@ -10,21 +10,17 @@
     font-size: 25px;
     font-weight: bold;
     color: #333;
-    position: absolute;
-    bottom: 0;
-    right: 0;
     width: 100vw;
-    height: 6vh;
+    height: 8vh;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-end;
-    margin-bottom: 50px;
-    margin-right: 50px;
     a {
         list-style: none;
         color: #f5240a;
         text-decoration: none;
         margin-left: 10px;
+        margin-right: 50px;
     }
 }
 </style>

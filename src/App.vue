@@ -1,10 +1,10 @@
 <template>
     <div id="app">
-        <Game/>
-        <Score/>
         <Topbar/>
-        <Footer/>
+        <Score/>
         <NewGame/>
+        <Game/>
+        <Footer/>
     </div>
 </template>
 
@@ -36,12 +36,18 @@ export default class App extends Vue {}
 }
 #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     width: 100vw;
     background: #faf8ef;
     overflow: hidden;
+    display: grid;
+    grid-template-columns: 750px;
+    grid-template-rows: 20vh 9vh 8vh 55vh 8vh;
+    grid-template-areas:
+        "topbar"
+        "score"
+        "newgame"
+        "game"
+        "footer";
 }
 </style>

@@ -1,5 +1,7 @@
 <template>
-    <section class="button" v-on:click="newGame">New Game</section>
+    <section class="buttonbox">
+        <div class="button" v-on:click="newGame">New Game</div>
+    </section>
 </template>
 
 <script lang="ts">
@@ -21,21 +23,23 @@ export default class Game extends Vue {
 </script>
 
 <style lang="less" scoped>
-.button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-right: 50px;
-    margin-top: 410px;
-    background: #8F7A66;
-    color: #fff;
-    width: 300px;
-    height: 60px;
+.buttonbox {
+    grid-area: "newgame";
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    border-radius: 8px;
-    font-size: 30px;
-    font-weight: bold;
+    .button {
+        background: #8f7a66;
+        color: #fff;
+        width: 300px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        font-size: 30px;
+        font-weight: bold;
+        margin-right: 50px;
+    }
 }
 </style>
