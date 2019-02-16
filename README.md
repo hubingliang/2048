@@ -1,21 +1,5 @@
 # 2048
 
-## Project setup
-```
-yarn install
-```
+![](https://i.loli.net/2018/12/08/5c0b30c8a1158.jpg)
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
+基于vue(2.5) + vuex + less + TypeScript 开发的2048小游戏。
