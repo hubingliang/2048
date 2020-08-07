@@ -1,7 +1,7 @@
 <template>
     <section class="author">
         Made from
-        <a href="http://brownhu.site/">BrownHu</a>
+        <a href="https://brianhu.netlify.app/">Brian Hu</a>
     </section>
 </template>
 

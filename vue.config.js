@@ -1,4 +1,4 @@
 module.exports = {
-    // 选项...  
-    baseUrl: '/2048/dist/'
-}
+  // 选项...
+  publicPath: "/2048/dist/",
+};
